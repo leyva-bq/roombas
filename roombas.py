@@ -32,7 +32,7 @@ def moverArriba(pos, numRoomba):
     # actualizar posicion
     pos[0] -= 1
     
-    return pos
+    return True
 
 def moverDerecha(pos, numRoomba):
     global habitacion
@@ -55,7 +55,7 @@ def moverDerecha(pos, numRoomba):
     # actualizar posicion
     pos[1] += 1
     
-    return pos
+    return True
 
 def moverAbajo(pos, numRoomba):
     global habitacion
@@ -78,7 +78,7 @@ def moverAbajo(pos, numRoomba):
     # actualizar posicion
     pos[0] += 1
     
-    return pos
+    return True
 
 def moverIzquierda(pos, numRoomba):
     global habitacion
@@ -101,7 +101,7 @@ def moverIzquierda(pos, numRoomba):
     # actualizar posicion
     pos[1] -= 1
     
-    return pos
+    return True
 
 def moverRoomba(pos, numRoomba):
     
@@ -114,30 +114,47 @@ def moverRoomba(pos, numRoomba):
                 # mover izquierda
                 moverIzquierda(pos, numRoomba)
                 
-    return pos
-                
 def printHabitacion():
     global habitacion
-    for i in habitacion:
-        print(i)
+    
+    print("=== HABITACION ===")
+    for row in habitacion:
+        print(*row)
+    
+    print("=== HABITACION ===")
+    
+    print("")
+    
+def habitacionLimpia():
+    global habitacion
+    
+    for row in habitacion:
+        if "x" in row:
+            return False
+        
+    return True
+    
                 
 def roomba(posInicial, numRoomba, timeMax):
     global habitacion
     pos = posInicial
     iter = 0
+    limpio = False
     
-    while True:
+    while not limpio:
         iter += 1
         if timeMax == iter:
             return
         
+        
         print("{}: Estoy en {}: {}".format(numRoomba, pos, habitacion[pos[0]][pos[1]]))
         habitacion[pos[0]][pos[1]] = numRoomba
         printHabitacion()
+        limpio = habitacionLimpia()
         
         moverRoomba(pos, numRoomba)
-        
         time.sleep(1)
+        
 
 def roombas(params):
     
