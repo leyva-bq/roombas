@@ -10,3 +10,12 @@ R1, R2, R3.. es el numero de roomba
 i es inicial
 o es limpio
 x es sucio
+
+habitacion final:
+[
+    [i, o, o],
+    [o, R1, o],
+    [o, o, o]
+]
+
+* sin x

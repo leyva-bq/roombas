@@ -29,7 +29,10 @@ def moverArriba(pos, numRoomba):
     habitacion[pos_x][pos_y] = "o"
     habitacion[pos_x - 1][pos_y] = numRoomba
     
-    return True
+    # actualizar posicion
+    pos[0] -= 1
+    
+    return pos
 
 def moverDerecha(pos, numRoomba):
     global habitacion
@@ -49,7 +52,10 @@ def moverDerecha(pos, numRoomba):
     habitacion[pos_x][pos_y] = "o"
     habitacion[pos_x][pos_y + 1] = numRoomba
     
-    return True
+    # actualizar posicion
+    pos[1] += 1
+    
+    return pos
 
 def moverAbajo(pos, numRoomba):
     global habitacion
@@ -69,7 +75,10 @@ def moverAbajo(pos, numRoomba):
     habitacion[pos_x][pos_y] = "o"
     habitacion[pos_x + 1][pos_y] = numRoomba
     
-    return True
+    # actualizar posicion
+    pos[0] += 1
+    
+    return pos
 
 def moverIzquierda(pos, numRoomba):
     global habitacion
@@ -89,7 +98,10 @@ def moverIzquierda(pos, numRoomba):
     habitacion[pos_x][pos_y] = "o"
     habitacion[pos_x][pos_y - 1] = numRoomba
     
-    return True
+    # actualizar posicion
+    pos[1] -= 1
+    
+    return pos
 
 def moverRoomba(pos, numRoomba):
     
@@ -102,28 +114,43 @@ def moverRoomba(pos, numRoomba):
                 # mover izquierda
                 moverIzquierda(pos, numRoomba)
                 
-def roomba(posInicial, numRoomba):
+    return pos
+                
+def printHabitacion():
+    global habitacion
+    for i in habitacion:
+        print(i)
+                
+def roomba(posInicial, numRoomba, timeMax):
     global habitacion
     pos = posInicial
+    iter = 0
     
-    print("Estoy en {}: {}".format(pos, habitacion[pos[0]][pos[1]]))
-    
-    moverRoomba(pos, numRoomba)
-    
-    time.sleep(1)
-    
-    return
+    while True:
+        iter += 1
+        if timeMax == iter:
+            return
+        
+        print("{}: Estoy en {}: {}".format(numRoomba, pos, habitacion[pos[0]][pos[1]]))
+        habitacion[pos[0]][pos[1]] = numRoomba
+        printHabitacion()
+        
+        moverRoomba(pos, numRoomba)
+        
+        time.sleep(1)
 
 def roombas(params):
     
-    listaRoombas = []
     global habitacion
+    listaRoombas = []
     habitacion = [["_" for _ in range(params["n"])] for _ in range(params["m"])]
     
     habitacion[1][1] = "x"
     
     for k in range(params["numRoombas"]):
-        t = th.Thread(target=roomba, args=(params["posInicial"], params["numRoombas"]))
+        numRoomba = "R" + str(k)
+        
+        t = th.Thread(target=roomba, args=(params["posInicial"], numRoomba, params["segundosMax"]))
         listaRoombas.append(t)
         t.start()
         
