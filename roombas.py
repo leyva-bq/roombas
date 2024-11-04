@@ -3,9 +3,9 @@ import time
 import random
 
 params = {
-    "numRoombas": 2,
     "m": 5,
     "n": 5,
+    "numRoombas": 2,
     "numSucio": 2,
     "posInicial": [0, 0],
     "segundosMax": 10,
@@ -164,7 +164,6 @@ def roomba(posInicial, numRoomba, timeMax, velRoomba):
         if iter > maxIter:
             return
         
-        
         print("{}: Estoy en {}: {}".format(numRoomba, pos, habitacion[pos[0]][pos[1]]))
         habitacion[pos[0]][pos[1]] = numRoomba
         printHabitacion()
@@ -190,7 +189,7 @@ def roombas(params):
     movimientos = {}
     limpio = False
     
-    for _ in range(params["numSucio"]):
+    for _ in range(params["numSucio"] - 1):
         x, y = random.randint(0, params["m"]-1), random.randint(0, params["n"]-1)
         
         while habitacion[x][y] == "x" or (x == 0 and y == 0):
@@ -209,15 +208,78 @@ def roombas(params):
         t.start()
         
         time.sleep(params["velocidadRoombas"] / params["numRoombas"])
+       
+def startInput():
+    
+    # m
+    while True:
+        m = input("M: ")
+        try:
+            if int(m) < 2 or int(m) > 10:
+                print("Ingresar un valor de 2 a 10.")
+            else:
+                break
+        except ValueError:
+            print("Ingresar un valor numerico.")
+    params["m"] = int(m)
+    
+    # n
+    while True:
+        n = input("N: ")
+        try:
+            if int(m) < 2 or int(m) > 10:
+                print("Ingresar un valor de 2 a 10.")
+            else:
+                break
+        except ValueError:
+            print("Ingresar un valor numerico.")
+    params["n"] = int(n)
+    
+    # numRoombas
+    while True:
+        numRoombas = input("Numero de agentes: ")
+        try:
+            if int(numRoombas) < 1 or int(numRoombas) > 10:
+                print("Ingresar un valor de 1 a 10.")
+            else:
+                break
+        except ValueError:
+            print("Ingresar un valor numerico.")
+    params["numRoombas"] = int(numRoombas)
+    
+    # celdas sucias
+    while True:
+        sucias = input("Porcentaje de celdas sucias (0-1): ")
+        try:
+            if float(sucias) < 0 or float(sucias) > 1:
+                print("Ingresar un valor de 0 a 1.")
+            else:
+                break
+        except ValueError:
+            print("Ingresar un valor numerico.")
+    params["numSucio"] = int(params["m"] * params["n"] * float(sucias))
+    
+    # tiempo maximo
+    while True:
+        tiempoMax = input("Tiempo máximo de ejecución (s): ")
+        try:
+            if int(tiempoMax) < 1 or int(tiempoMax) > 20:
+                print("Ingresar un valor de 1 al 20.")
+            else:
+                break
+        except ValueError:
+            print("Ingresar un valor numerico.")
+    params["segundosMax"] = int(tiempoMax)
         
 #* main
 startTime = 0
 endTime = 0
+startInput()
 roombas(params)
 
 # checar que haya terminado
 timeIter = 0
-while not limpio or timeIter > params["segundosMax"] + 0.5:
+while not limpio and timeIter < params["segundosMax"] + 0.5:
     time.sleep(1)
     timeIter += 1
 
