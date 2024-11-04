@@ -4,12 +4,12 @@ import random
 
 params = {
     "numRoombas": 2,
-    "m": 3,
-    "n": 3,
-    "numSucio": 1,
+    "m": 5,
+    "n": 5,
+    "numSucio": 2,
     "posInicial": [0, 0],
-    "segundosMax": 5,
-    "velocidadRoombas": 1
+    "segundosMax": 10,
+    "velocidadRoombas": 0.5
 }
 
 def moverArriba(pos, numRoomba):
