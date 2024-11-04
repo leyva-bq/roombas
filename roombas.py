@@ -219,8 +219,6 @@ def roombas(params):
     global habitacion
     global movimientos
     global limpio
-    global startTime
-    global endTime
     
     listaRoombas = []
     habitacion = [["_" for _ in range(params["n"])] for _ in range(params["m"])]
@@ -235,7 +233,6 @@ def roombas(params):
             
         habitacion[x][y] = "x"
     
-    startTime = time.time()
     for k in range(1, params["numRoombas"] + 1):
         numRoomba = "R" + str(k)
         movimientos[numRoomba] = []
@@ -325,6 +322,7 @@ def main():
     endTime = 0
     os.system("clear")
     startInput()
+    startTime = time.time()
     roombas(params)
 
     # checar que haya terminado
@@ -358,5 +356,7 @@ def main():
     print("  - Movimientos:")
     for k in movimientos:
         print(f"    {k}: {movimientos[k]}")
+    
+    return params["m"], params["n"], params["numRoombas"], tiempo
         
-main()
+m, n, numRoombas, tiempo = main()
