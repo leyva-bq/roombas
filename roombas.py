@@ -119,17 +119,23 @@ def moverIzquierda(pos, numRoomba):
     
     return True
 
-def moverRoomba(pos, numRoomba):
+def moverRoomba(pos, numRoomba, tipoRoomba):
     
-    # mover arriba
-    if not moverArriba(pos, numRoomba):
-        # mover derecha
-        if not moverDerecha(pos, numRoomba):
-            # mover abajo
+    #* clockwise roomba
+    if tipoRoomba == "cw":
+        if not moverArriba(pos, numRoomba):
+            if not moverDerecha(pos, numRoomba):
+                if not moverAbajo(pos, numRoomba):
+                    if not moverIzquierda(pos, numRoomba):
+                        return
+                    
+    #* counter-clockwise roomba
+    else:
+        if not moverArriba(pos, numRoomba):
             if not moverAbajo(pos, numRoomba):
-                # mover izquierda
-                if not moverIzquierda(pos, numRoomba):
-                    return
+                if not moverDerecha(pos, numRoomba):
+                    if not moverIzquierda(pos, numRoomba):
+                        return
                 
 def printHabitacion():
     global habitacion
@@ -151,7 +157,7 @@ def habitacionLimpia():
     return True
     
                 
-def roomba(posInicial, numRoomba, timeMax, velRoomba):
+def roomba(posInicial, numRoomba, timeMax, velRoomba, tipoRoomba):
     global habitacion
     global limpio
     global endTime
@@ -171,7 +177,7 @@ def roomba(posInicial, numRoomba, timeMax, velRoomba):
         if limpio: break
         limpio = habitacionLimpia()
         
-        moverRoomba(pos, numRoomba)
+        moverRoomba(pos, numRoomba, tipoRoomba)
         time.sleep(velRoomba)
         
     if endTime == 0: endTime = time.time()
@@ -200,11 +206,22 @@ def roombas(params):
         habitacionInicial[x][y] = "x"
     
     startTime = time.time()
-    for k in range(params["numRoombas"]):
+    for k in range(1, params["numRoombas"] + 1):
         numRoomba = "R" + str(k)
         movimientos[numRoomba] = []
+        if k % 2 == 0:
+            tipoRoomba = 'cw'
+        else:
+            tipoRoomba = 'ccw'
         
-        t = th.Thread(target=roomba, args=(params["posInicial"], numRoomba, params["segundosMax"], params["velocidadRoombas"]))
+        t = th.Thread(target=roomba,
+                      args=(
+                          params["posInicial"],
+                          numRoomba, 
+                          params["segundosMax"],
+                          params["velocidadRoombas"],
+                          tipoRoomba
+                          ))
         listaRoombas.append(t)
         t.start()
         
@@ -228,7 +245,7 @@ def startInput():
     while True:
         n = input("N: ")
         try:
-            if int(m) < 2 or int(m) > 10:
+            if int(n) < 2 or int(n) > 10:
                 print("Ingresar un valor de 2 a 10.")
             else:
                 break
@@ -302,10 +319,10 @@ print("  - Terminado:", limpio)
 habitacion_plana = list(chain.from_iterable(habitacion))
 celdas_limpias = len([x for x in habitacion_plana if x == 'o'])
 
-print("+ Celdas limpias: {:.2f}%".format(celdas_limpias / len(habitacion_plana) * 100))
+print("+ Celdas limpias: {:.2f}%".format(celdas_limpias / (len(habitacion_plana) - params["numRoombas"]) * 100))
 
 # analisis movimientos
-print("+ Movimientos en total por {} roombas: {}".format(params["numRoombas"], sum([len(movimientos[m]) for m in movimientos])))
+print(f"+ Movimientos en total por {params['numRoombas']} roomba{'s:' if params['numRoombas'] != 1 else ':'} {sum([len(movimientos[m]) for m in movimientos])}")
 print("  - Movimientos:")
 for k in movimientos:
     print(f"    {k}: {movimientos[k]}")
