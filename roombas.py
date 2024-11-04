@@ -36,7 +36,7 @@ def moverArriba(pos, numRoomba):
     pos[0] -= 1
     
     # log movimiento
-    movimientos[numRoomba].append("U")
+    movimientos[numRoomba].append("Arriba")
     
     return True
 
@@ -63,7 +63,7 @@ def moverDerecha(pos, numRoomba):
     pos[1] += 1
     
     # log movimiento
-    movimientos[numRoomba].append("R")
+    movimientos[numRoomba].append("Derecha")
     
     return True
 
@@ -89,7 +89,7 @@ def moverAbajo(pos, numRoomba):
     pos[0] += 1
     
     # log movimiento
-    movimientos[numRoomba].append("D")
+    movimientos[numRoomba].append("Abajo")
     
     return True
 
@@ -115,7 +115,7 @@ def moverIzquierda(pos, numRoomba):
     pos[1] -= 1
     
     # log movimiento
-    movimientos[numRoomba].append("L")
+    movimientos[numRoomba].append("Izquierda")
     
     return True
 
