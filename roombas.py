@@ -143,7 +143,12 @@ def printHabitacion():
     os.system("clear")
     print("=== HABITACION ===")
     for row in habitacion:
-        print(*row)
+        for r in row:
+            if r[0] == 'R':
+                print(r, end=' ')
+            else:
+                print(r, end='  ')
+        print("")
     
     print("")
     
@@ -302,7 +307,6 @@ while not limpio and timeIter < params["segundosMax"] + 0.5:
     time.sleep(1)
     timeIter += 1
 
-os.system("clear")
 print("=========== ANALISIS ===========")
 
 # analisis tiempo
@@ -326,13 +330,3 @@ print(f"+ Movimientos en total por {params['numRoombas']} roomba{'s:' if params[
 print("  - Movimientos:")
 for k in movimientos:
     print(f"    {k}: {movimientos[k]}")
-
-print("\n=== HABITACION INICIAL ===")
-for row in habitacionInicial:
-    print(*row)
-
-print("\n=== HABITACION FINAL ===")
-
-for row in habitacion:
-    print(*row)
-    
