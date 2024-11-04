@@ -119,6 +119,33 @@ def moverIzquierda(pos, numRoomba):
     
     return True
 
+def moverSE(pos, numRoomba):
+    global habitacion
+    
+    max_x, max_y = len(habitacion) - 1, len(habitacion[0]) - 1
+    pos_x, pos_y = pos
+    
+    # si se encuentra en borde derecha o borde abajo, no moverse
+    if pos_x == max_x or pos_y == max_y:
+        return False
+    
+    # si el siguiente paso esta limpio o hay otra roomba
+    if habitacion[pos_x + 1][pos_y + 1] == "o" or habitacion[pos_x + 1][pos_y + 1][0] == "R":
+        return False
+    
+    # hacer movimiento
+    habitacion[pos_x][pos_y] = "o"
+    habitacion[pos_x + 1][pos_y + 1] = numRoomba
+    
+    # actualizar posicion
+    pos[0] += 1
+    pos[1] += 1
+    
+    # log movimiento
+    movimientos[numRoomba].append("Izquierda")
+    
+    return True
+
 def moverRoomba(pos, numRoomba, tipoRoomba):
     
     #* clockwise roomba
@@ -127,7 +154,8 @@ def moverRoomba(pos, numRoomba, tipoRoomba):
             if not moverDerecha(pos, numRoomba):
                 if not moverAbajo(pos, numRoomba):
                     if not moverIzquierda(pos, numRoomba):
-                        return
+                        if not moverSE(pos, numRoomba):
+                            return
                     
     #* counter-clockwise roomba
     else:
@@ -135,7 +163,8 @@ def moverRoomba(pos, numRoomba, tipoRoomba):
             if not moverAbajo(pos, numRoomba):
                 if not moverDerecha(pos, numRoomba):
                     if not moverIzquierda(pos, numRoomba):
-                        return
+                        if not moverSE(pos, numRoomba):
+                            return
                 
 def printHabitacion():
     global habitacion
