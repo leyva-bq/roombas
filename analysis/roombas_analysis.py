@@ -375,7 +375,7 @@ settings = [
 
 times_df = pd.read_csv('times.csv')
 
-for _ in range(1):
+for _ in range(5):
     for sett in settings:
         params["m"] = sett[0]
         params["n"] = sett[1]
