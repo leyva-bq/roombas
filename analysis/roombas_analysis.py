@@ -359,7 +359,7 @@ def main():
     for k in movimientos:
         print(f"    {k}: {movimientos[k]}")
     
-    return tiempo, porcentaje_limpio
+    return tiempo
         
 settings = [
     [3, 3, 1],
@@ -381,7 +381,7 @@ for _ in range(1):
         params["n"] = sett[1]
         params["numRoombas"] = sett[2]
         params["numSucio"] = int(params["m"] * params["n"] * 0.5)
-        tiempo, porcentaje_limpio = main()
+        tiempo = main()
         time.sleep(1)
         
         times_df = times_df._append(
@@ -389,7 +389,7 @@ for _ in range(1):
             'n': sett[1],
             'numRoombas': sett[2],
             'tiempo': tiempo,
-            'porcentaje': porcentaje_limpio
+            'movimientos': sum([len(movimientos[m]) for m in movimientos])
             },
             ignore_index=True)
         
