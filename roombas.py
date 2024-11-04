@@ -349,8 +349,9 @@ def main():
     # analisis limpio
     habitacion_plana = list(chain.from_iterable(habitacion))
     celdas_limpias = len([x for x in habitacion_plana if x == 'o'])
+    porcentaje_limpio = celdas_limpias / (len(habitacion_plana) - params["numRoombas"]) * 100
 
-    print("+ Celdas limpias: {:.3f}%".format(celdas_limpias / (len(habitacion_plana) - params["numRoombas"]) * 100))
+    print("+ Celdas limpias: {:.3f}%".format(porcentaje_limpio))
 
     # analisis movimientos
     print(f"+ Movimientos en total por {params['numRoombas']} roomba{'s:' if params['numRoombas'] != 1 else ':'} {sum([len(movimientos[m]) for m in movimientos])}")
@@ -358,7 +359,7 @@ def main():
     for k in movimientos:
         print(f"    {k}: {movimientos[k]}")
     
-    return tiempo
+    return tiempo, porcentaje_limpio
         
 settings = [
     [3, 3, 1],
