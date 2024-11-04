@@ -372,20 +372,22 @@ settings = [
     [5, 5, 3],
 ]
 
-times_df = pd.DataFrame(columns=['m', 'n', 'numRoombas', 'tiempo'])
+times_df = pd.read_csv('times.csv')
 
-for sett in settings:
-    params["m"] = sett[0]
-    params["n"] = sett[1]
-    params["numRoombas"] = sett[2]
-    tiempo = main()
-    time.sleep(1)
-    
-    times_df = times_df._append(
-        {'m': sett[0],
-        'n': sett[1],
-        'numRoombas': sett[2],
-        'tiempo': tiempo},
-        ignore_index=True)
-    
+for _ in range(5):
+    for sett in settings:
+        params["m"] = sett[0]
+        params["n"] = sett[1]
+        params["numRoombas"] = sett[2]
+        params["numSucio"] = int(params["m"] * params["n"] * 0.5)
+        tiempo = main()
+        time.sleep(1)
+        
+        times_df = times_df._append(
+            {'m': sett[0],
+            'n': sett[1],
+            'numRoombas': sett[2],
+            'tiempo': tiempo},
+            ignore_index=True)
+        
 times_df.to_csv('times.csv', index=False)
