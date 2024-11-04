@@ -1,5 +1,6 @@
 from itertools import chain
 import threading as th
+import pandas as pd
 import time
 import random
 import os
@@ -10,7 +11,7 @@ params = {
     "numRoombas": 2,
     "numSucio": 5,
     "posInicial": [0, 0],
-    "segundosMax": 10,
+    "segundosMax": 60,
     "velocidadRoombas": 1,
 }
 
@@ -321,7 +322,7 @@ def main():
     startTime = 0
     endTime = 0
     os.system("clear")
-    startInput()
+    # startInput()
     startTime = time.time()
     roombas(params)
 
@@ -357,6 +358,36 @@ def main():
     for k in movimientos:
         print(f"    {k}: {movimientos[k]}")
     
-    return params["m"], params["n"], params["numRoombas"], tiempo
+    return tiempo
         
-m, n, numRoombas, tiempo = main()
+settings = [
+    [3, 3, 1],
+    [3, 3, 2],
+    [3, 3, 3],
+    [4, 4, 1],
+    [4, 4, 2],
+    [4, 4, 3],
+    [5, 5, 1],
+    [5, 5, 2],
+    [5, 5, 3],
+]
+
+times_df = pd.read_csv('times.csv')
+
+for _ in range(5):
+    for sett in settings:
+        params["m"] = sett[0]
+        params["n"] = sett[1]
+        params["numRoombas"] = sett[2]
+        params["numSucio"] = int(params["m"] * params["n"] * 0.5)
+        tiempo = main()
+        time.sleep(1)
+        
+        times_df = times_df._append(
+            {'m': sett[0],
+            'n': sett[1],
+            'numRoombas': sett[2],
+            'tiempo': tiempo},
+            ignore_index=True)
+        
+times_df.to_csv('times.csv', index=False)
