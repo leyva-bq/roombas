@@ -11,7 +11,7 @@ params = {
     "numRoombas": 2,
     "numSucio": 5,
     "posInicial": [0, 0],
-    "segundosMax": 10,
+    "segundosMax": 60,
     "velocidadRoombas": 1,
 }
 
@@ -379,6 +379,7 @@ for sett in settings:
     params["n"] = sett[1]
     params["numRoombas"] = sett[2]
     tiempo = main()
+    time.sleep(1)
     
     times_df = times_df._append(
         {'m': sett[0],
@@ -387,4 +388,4 @@ for sett in settings:
         'tiempo': tiempo},
         ignore_index=True)
     
-times_df.to_csv('times.csv')
+times_df.to_csv('times.csv', index=False)
