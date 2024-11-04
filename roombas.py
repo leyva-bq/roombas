@@ -194,7 +194,6 @@ def habitacionLimpia():
 def roomba(posInicial, numRoomba, timeMax, velRoomba, tipoRoomba):
     global habitacion
     global limpio
-    global endTime
     
     pos = posInicial.copy()
     iter = 0
@@ -203,18 +202,18 @@ def roomba(posInicial, numRoomba, timeMax, velRoomba, tipoRoomba):
     while not limpio:
         iter += 1
         if iter > maxIter:
-            return
+            break
         
         #? print("{}: Estoy en {}: {}".format(numRoomba, pos, habitacion[pos[0]][pos[1]]))
         habitacion[pos[0]][pos[1]] = numRoomba
         printHabitacion()
-        if limpio: break
+        if limpio:
+            break
         limpio = habitacionLimpia()
         
         moverRoomba(pos, numRoomba, tipoRoomba)
         time.sleep(velRoomba)
-        
-    if endTime == 0: endTime = time.time()
+    
 
 def roombas(params):
     global habitacion
@@ -329,9 +328,11 @@ roombas(params)
 
 # checar que haya terminado
 timeIter = 0
-while not limpio and timeIter < params["segundosMax"] + 0.5:
+while not limpio and timeIter < params["segundosMax"]:
     time.sleep(1)
     timeIter += 1
+
+endTime = time.time()
 
 print("=========== ANALISIS ===========")
 
