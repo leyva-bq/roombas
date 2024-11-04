@@ -174,7 +174,7 @@ def roomba(posInicial, numRoomba, timeMax, velRoomba):
         moverRoomba(pos, numRoomba)
         time.sleep(velRoomba)
         
-    endTime = time.time()
+    if endTime == 0: endTime = time.time()
 
 def roombas(params):
     global habitacion
@@ -215,7 +215,11 @@ startTime = 0
 endTime = 0
 roombas(params)
 
-time.sleep(params["segundosMax"] + 1)
+# checar que haya terminado
+timeIter = 0
+while not limpio or timeIter > params["segundosMax"] + 0.5:
+    time.sleep(1)
+    timeIter += 1
 
 print("=========== ANALISIS ===========")
 print("TERMINADO:", limpio)
