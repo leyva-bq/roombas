@@ -312,14 +312,14 @@ if limpio == False:
 else:
     tiempo = endTime - startTime
     
-print("+ Tiempo en terminar (s):", tiempo)
+print(f"+ Tiempo en terminar: {tiempo:.3f}s")
 print("  - Terminado:", limpio)
 
 # analisis limpio
 habitacion_plana = list(chain.from_iterable(habitacion))
 celdas_limpias = len([x for x in habitacion_plana if x == 'o'])
 
-print("+ Celdas limpias: {:.2f}%".format(celdas_limpias / (len(habitacion_plana) - params["numRoombas"]) * 100))
+print("+ Celdas limpias: {:.3f}%".format(celdas_limpias / (len(habitacion_plana) - params["numRoombas"]) * 100))
 
 # analisis movimientos
 print(f"+ Movimientos en total por {params['numRoombas']} roomba{'s:' if params['numRoombas'] != 1 else ':'} {sum([len(movimientos[m]) for m in movimientos])}")
