@@ -1,11 +1,12 @@
+from itertools import chain
 import threading as th
 import time
 import random
 import os
 
 params = {
-    "m": 10,
-    "n": 10,
+    "m": 9,
+    "n": 9,
     "numRoombas": 2,
     "numSucio": 5,
     "posInicial": [0, 0],
@@ -137,8 +138,6 @@ def printHabitacion():
     print("=== HABITACION ===")
     for row in habitacion:
         print(*row)
-    
-    print("=== HABITACION ===")
     
     print("")
     
@@ -288,16 +287,29 @@ while not limpio and timeIter < params["segundosMax"] + 0.5:
 
 os.system("clear")
 print("=========== ANALISIS ===========")
-print("TERMINADO:", limpio)
+
+# analisis tiempo
 
 if limpio == False:
     tiempo = params["segundosMax"]
 else:
     tiempo = endTime - startTime
     
-print("- TIEMPO EN TERMINAR (s):", tiempo)
-print("MOVIMIENTOS:", movimientos)
-print("- MOVIMIENTOS EN TOTAL POR {} ROOMBAS: {}".format(params["numRoombas"], sum([len(movimientos[m]) for m in movimientos])))
+print("+ Tiempo en terminar (s):", tiempo)
+print("  - Terminado:", limpio)
+
+# analisis limpio
+habitacion_plana = list(chain.from_iterable(habitacion))
+celdas_limpias = len([x for x in habitacion_plana if x == 'o'])
+
+print("+ Celdas limpias: {:.2f}%".format(celdas_limpias / len(habitacion_plana) * 100))
+
+# analisis movimientos
+print("+ Movimientos en total por {} roombas: {}".format(params["numRoombas"], sum([len(movimientos[m]) for m in movimientos])))
+print("  - Movimientos:")
+for k in movimientos:
+    print(f"    {k}: {movimientos[k]}")
+
 print("\n=== HABITACION INICIAL ===")
 for row in habitacionInicial:
     print(*row)
