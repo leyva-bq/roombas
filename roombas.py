@@ -9,7 +9,7 @@ params = {
     "numSucio": 2,
     "posInicial": [0, 0],
     "segundosMax": 10,
-    "velocidadRoombas": 0.5
+    "velocidadRoombas": 1,
 }
 
 def moverArriba(pos, numRoomba):
@@ -207,7 +207,7 @@ def roombas(params):
         listaRoombas.append(t)
         t.start()
         
-        time.sleep(params["velocidadRoombas"] / params["numRoombas"])
+        time.sleep(0.01)
        
 def startInput():
     
