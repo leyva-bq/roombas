@@ -1,12 +1,13 @@
 import threading as th
 import time
 import random
+import os
 
 params = {
-    "m": 5,
-    "n": 5,
+    "m": 10,
+    "n": 10,
     "numRoombas": 2,
-    "numSucio": 2,
+    "numSucio": 5,
     "posInicial": [0, 0],
     "segundosMax": 10,
     "velocidadRoombas": 1,
@@ -132,6 +133,7 @@ def moverRoomba(pos, numRoomba):
 def printHabitacion():
     global habitacion
     
+    os.system("clear")
     print("=== HABITACION ===")
     for row in habitacion:
         print(*row)
@@ -164,7 +166,7 @@ def roomba(posInicial, numRoomba, timeMax, velRoomba):
         if iter > maxIter:
             return
         
-        print("{}: Estoy en {}: {}".format(numRoomba, pos, habitacion[pos[0]][pos[1]]))
+        #? print("{}: Estoy en {}: {}".format(numRoomba, pos, habitacion[pos[0]][pos[1]]))
         habitacion[pos[0]][pos[1]] = numRoomba
         printHabitacion()
         if limpio: break
@@ -274,6 +276,7 @@ def startInput():
 #* main
 startTime = 0
 endTime = 0
+os.system("clear")
 startInput()
 roombas(params)
 
@@ -283,16 +286,18 @@ while not limpio and timeIter < params["segundosMax"] + 0.5:
     time.sleep(1)
     timeIter += 1
 
+os.system("clear")
 print("=========== ANALISIS ===========")
 print("TERMINADO:", limpio)
 
 if limpio == False:
-    tiempo = "N/A"
+    tiempo = params["segundosMax"]
 else:
     tiempo = endTime - startTime
     
 print("- TIEMPO EN TERMINAR (s):", tiempo)
 print("MOVIMIENTOS:", movimientos)
+print("- MOVIMIENTOS EN TOTAL POR {} ROOMBAS: {}".format(params["numRoombas"], sum([len(movimientos[m]) for m in movimientos])))
 print("\n=== HABITACION INICIAL ===")
 for row in habitacionInicial:
     print(*row)
