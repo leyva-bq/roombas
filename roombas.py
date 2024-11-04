@@ -162,7 +162,13 @@ def roombas(params):
     listaRoombas = []
     habitacion = [["_" for _ in range(params["n"])] for _ in range(params["m"])]
     
-    habitacion[1][1] = "x"
+    for _ in range(params["numSucio"]):
+        x, y = random.randint(0, params["m"]-1), random.randint(0, params["n"]-1)
+        
+        while habitacion[x][y] == "x":
+            x, y = random.randint(0, params["m"]-1), random.randint(0, params["n"]-1)
+            
+        habitacion[x][y] = "x"
     
     for k in range(params["numRoombas"]):
         numRoomba = "R" + str(k)
