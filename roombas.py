@@ -3,12 +3,13 @@ import time
 import random
 
 params = {
-    "numRoombas": 1,
+    "numRoombas": 2,
     "m": 3,
     "n": 2,
     "numSucio": 1,
     "posInicial": [0, 0],
-    "segundosMax": 5
+    "segundosMax": 5,
+    "velocidadRoombas": 1
 }
 
 def moverArriba(pos, numRoomba):
@@ -32,10 +33,14 @@ def moverArriba(pos, numRoomba):
     # actualizar posicion
     pos[0] -= 1
     
+    # log movimiento
+    movimientos[numRoomba].append("U")
+    
     return True
 
 def moverDerecha(pos, numRoomba):
     global habitacion
+    global movimientos
     
     max_x, max_y = len(habitacion) - 1, len(habitacion[0]) - 1
     pos_x, pos_y = pos
@@ -54,6 +59,9 @@ def moverDerecha(pos, numRoomba):
     
     # actualizar posicion
     pos[1] += 1
+    
+    # log movimiento
+    movimientos[numRoomba].append("R")
     
     return True
 
@@ -78,6 +86,9 @@ def moverAbajo(pos, numRoomba):
     # actualizar posicion
     pos[0] += 1
     
+    # log movimiento
+    movimientos[numRoomba].append("D")
+    
     return True
 
 def moverIzquierda(pos, numRoomba):
@@ -101,6 +112,9 @@ def moverIzquierda(pos, numRoomba):
     # actualizar posicion
     pos[1] -= 1
     
+    # log movimiento
+    movimientos[numRoomba].append("L")
+    
     return True
 
 def moverRoomba(pos, numRoomba):
@@ -112,7 +126,8 @@ def moverRoomba(pos, numRoomba):
             # mover abajo
             if not moverAbajo(pos, numRoomba):
                 # mover izquierda
-                moverIzquierda(pos, numRoomba)
+                if not moverIzquierda(pos, numRoomba):
+                    return
                 
 def printHabitacion():
     global habitacion
@@ -135,9 +150,9 @@ def habitacionLimpia():
     return True
     
                 
-def roomba(posInicial, numRoomba, timeMax):
+def roomba(posInicial, numRoomba, timeMax, velRoomba):
     global habitacion
-    pos = posInicial
+    pos = posInicial.copy()
     iter = 0
     limpio = False
     
@@ -153,28 +168,49 @@ def roomba(posInicial, numRoomba, timeMax):
         limpio = habitacionLimpia()
         
         moverRoomba(pos, numRoomba)
-        time.sleep(1)
+        time.sleep(velRoomba)
         
 
 def roombas(params):
-    
     global habitacion
+    global habitacionInicial
+    global movimientos
+    global terminado
+    
     listaRoombas = []
     habitacion = [["_" for _ in range(params["n"])] for _ in range(params["m"])]
+    habitacionInicial = [["_" for _ in range(params["n"])] for _ in range(params["m"])]
+    movimientos = {}
+    terminado = False
     
     for _ in range(params["numSucio"]):
         x, y = random.randint(0, params["m"]-1), random.randint(0, params["n"]-1)
         
-        while habitacion[x][y] == "x":
+        while habitacion[x][y] == "x" or (x == 0 and y == 0):
             x, y = random.randint(0, params["m"]-1), random.randint(0, params["n"]-1)
             
         habitacion[x][y] = "x"
+        habitacionInicial[x][y] = "x"
     
     for k in range(params["numRoombas"]):
         numRoomba = "R" + str(k)
+        movimientos[numRoomba] = []
         
-        t = th.Thread(target=roomba, args=(params["posInicial"], numRoomba, params["segundosMax"]))
+        t = th.Thread(target=roomba, args=(params["posInicial"], numRoomba, params["segundosMax"], params["velocidadRoombas"]))
         listaRoombas.append(t)
         t.start()
         
+        time.sleep(0.5)
+        
 roombas(params)
+
+time.sleep(params["segundosMax"] + 1)
+
+print(movimientos)
+for row in habitacionInicial:
+    print(*row)
+
+print("")
+
+for row in habitacion:
+    print(*row)
