@@ -233,8 +233,8 @@ def startInput():
     while True:
         m = input("M: ")
         try:
-            if int(m) < 2 or int(m) > 10:
-                print("Ingresar un valor de 2 a 10.")
+            if int(m) < 2 or int(m) > 15:
+                print("Ingresar un valor de 2 a 15.")
             else:
                 break
         except ValueError:
@@ -245,8 +245,8 @@ def startInput():
     while True:
         n = input("N: ")
         try:
-            if int(n) < 2 or int(n) > 10:
-                print("Ingresar un valor de 2 a 10.")
+            if int(n) < 2 or int(n) > 15:
+                print("Ingresar un valor de 2 a 15.")
             else:
                 break
         except ValueError:
@@ -281,8 +281,8 @@ def startInput():
     while True:
         tiempoMax = input("Tiempo máximo de ejecución (s): ")
         try:
-            if int(tiempoMax) < 1 or int(tiempoMax) > 20:
-                print("Ingresar un valor de 1 al 20.")
+            if int(tiempoMax) < 1 or int(tiempoMax) > 60:
+                print("Ingresar un valor de 1 al 60.")
             else:
                 break
         except ValueError:
