@@ -189,7 +189,6 @@ def roomba(posInicial, numRoomba, timeMax, velRoomba, tipoRoomba):
 
 def roombas(params):
     global habitacion
-    global habitacionInicial
     global movimientos
     global limpio
     global startTime
@@ -197,7 +196,6 @@ def roombas(params):
     
     listaRoombas = []
     habitacion = [["_" for _ in range(params["n"])] for _ in range(params["m"])]
-    habitacionInicial = [["_" for _ in range(params["n"])] for _ in range(params["m"])]
     movimientos = {}
     limpio = False
     
@@ -208,7 +206,6 @@ def roombas(params):
             x, y = random.randint(0, params["m"]-1), random.randint(0, params["n"]-1)
             
         habitacion[x][y] = "x"
-        habitacionInicial[x][y] = "x"
     
     startTime = time.time()
     for k in range(1, params["numRoombas"] + 1):
